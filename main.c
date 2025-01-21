@@ -6,25 +6,23 @@
 #include "sphere.h"
 #include "lighting.h"
 
-typedef struct
+typedef struct 
 {
     int width;
     int height;
-    double aspectRatio;
+    double fov;
     int centerX;
     int centerY;
-    double fov;
 } Camera;
 
-Vector getRayDirection(int x, int y, Camera camera)
+Vector unproject(int x, int y, Camera camera) 
 {
-    double aspectRatio = camera.aspectRatio;
-    double fov = camera.fov;
-    int width = camera.width;
-    int height = camera.height;
-    double xNorm = (2 * (x + 0.5) / width - 1) * aspectRatio * tan(fov / 2);
-    double yNorm = (1 - 2 * (y + 0.5) / height) * tan(fov / 2);
-    Vector direction = {xNorm, yNorm, -1};
+    double aspectRatio = camera.width / camera.height;
+    double hFOV = atan(aspectRatio * (camera.fov / 2));
+    double hFocalDistance = camera.width / (2 * tan(hFOV / 2));
+    double vFocalDistance = camera.height / (2 * tan(camera.fov / 2));
+
+    Vector direction = {(x - camera.centerX) / hFocalDistance, (y - camera.centerY) / vFocalDistance, 1};
     return normalize(direction);
 }
 
