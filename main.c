@@ -6,6 +6,28 @@
 #include "sphere.h"
 #include "lighting.h"
 
+typedef struct
+{
+    int width;
+    int height;
+    double aspectRatio;
+    int centerX;
+    int centerY;
+    double fov;
+} Camera;
+
+Vector getRayDirection(int x, int y, Camera camera)
+{
+    double aspectRatio = camera.aspectRatio;
+    double fov = camera.fov;
+    int width = camera.width;
+    int height = camera.height;
+    double xNorm = (2 * (x + 0.5) / width - 1) * aspectRatio * tan(fov / 2);
+    double yNorm = (1 - 2 * (y + 0.5) / height) * tan(fov / 2);
+    Vector direction = {xNorm, yNorm, -1};
+    return normalize(direction);
+}
+
 int main() 
 {
     // Intersection test
