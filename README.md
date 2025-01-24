@@ -1,4 +1,4 @@
 # Compilation command
 ```
- gcc -Iinclude main.c src/sphere.c src/lighting.c src/vector.c -o run -lm
+g++ -Iinclude main.cc src/sphere.c src/lighting.c src/vector.c -o run `pkg-config --cflags --libs opencv4`
 ```
