@@ -1,6 +1,6 @@
-#include <cmath>
+#include <math.h>
 #include <stdbool.h>
-#include <cstdio>
+#include <stdio.h>
 
 #include "sphere.h"
 #include "vector.h"

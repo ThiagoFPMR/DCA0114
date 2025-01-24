@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "vector.h"
 
 Vector productByScalar(double a, Vector v) 
@@ -61,6 +63,6 @@ Vector productByMatrix(double m[3][3], Vector v)
 
 Vector normalize(Vector v)
 {
-    return productByScalar(1/scalarProduct(v, v), v);
+    return productByScalar(1/sqrt(scalarProduct(v, v)), v);
 }
 

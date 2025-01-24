@@ -40,32 +40,19 @@ void display(const std::vector<std::vector<cv::Vec3b>>& image)
             img.at<cv::Vec3b>(i, j) = image[i][j];
         }
     }
+    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
 
     cv::imshow("image", img);
+    cv::imwrite("image.png", img);
     cv::waitKey(0);
-}
-
-void saveImgToFile(const std::vector<std::vector<cv::Vec3b>>& image, const std::string& filename)
-{
-    cv::Mat img(1000, 1000, CV_8UC3, cv::Scalar(0, 0, 0));
-
-    for (int i = 0; i < 1000; i++)
-    {
-        for (int j = 0; j < 1000; j++)
-        {
-            img.at<cv::Vec3b>(i, j) = image[i][j];
-        }
-    }
-
-    cv::imwrite(filename, img);
 }
 
 int main() 
 {
     Vector cameraPos = {0, 0, 0};
-    Camera camera = {1000, 1000, 90};
+    Camera camera = {1000, 1000, 60};
     Sphere sphere = {{0, 0, -3}, 1};
-    Vector sphereColor = {1, 0, 0};
+    Vector sphereColor = {255, 0, 0};
 
     Vector lightPos = {5, 5, 10};
 
@@ -85,10 +72,10 @@ int main()
                 Vector reflection = getReflectionVector(light, normal);
 
                 Vector color = calculateLighting(light, normal, reflection, observer, sphereColor);
-
-                image[i][j][0] = static_cast<uchar>(std::min(255.0, std::max(0.0, color.x * 255)));
-                image[i][j][1] = static_cast<uchar>(std::min(255.0, std::max(0.0, color.y * 255)));
-                image[i][j][2] = static_cast<uchar>(std::min(255.0, std::max(0.0, color.z * 255)));
+        
+                image[i][j][0] = color.x > 255 ? 255 : color.x;
+                image[i][j][1] = color.y > 255 ? 255 : color.y;
+                image[i][j][2] = color.z > 255 ? 255 : color.z;
             }
             else
             {
@@ -99,7 +86,6 @@ int main()
         }
     }
 
-    saveImgToFile(image, "image.png");
     display(image);
 
     return 0;
